@@ -1,0 +1,93 @@
+{% extends 'base.html' %}
+{% block content %}
+    <div class="container-fluid">
+        <div class="row top-buffer">
+            <div class="col-sm-12" id="current_conditions">
+                <div class="row">
+                    <div class="col-sm-12 text-sm-center">
+                        <h4>Right Now</h4>
+                    </div>
+                </div>
+                <div class="row row-eq-height">
+                    <div class="col-sm-4 text-sm-center">
+                        <h1 class="gigantic {{ 'pulse' if rain_soon }}"><i class="wi wi-forecast-io-{{ current_icon }}"></i></h1>
+                    </div>
+                    <div class="col-sm-4 text-sm-center">
+                        <h1 class="gigantic {{ current_temp | tempcolor }}">{{ current_temp }}°</h1>
+                    </div>
+                    <div class="col-sm-4 text-sm-center">
+                        <div class="row top-buffer">
+                            <div class="col-sm-8 col-sm-offset-4">
+                                <h1 class="display-4 {{ high | tempcolor }}">{{ high }}°</h1>
+                                <h1 class="display-4 text-muted {{ low | tempcolor }}">{{ low }}°</h1>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-4 text-sm-center">
+                        <h4>{{ current_text }}</h4>
+                    </div>
+                    <div class="col-sm-4 text-sm-center">
+                        <h4>Feels like {{ feels_like }}°</h4>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        {% if rain_soon %}
+            <div class="row top-buffer">
+                <div class="col-sm-12">
+                    <canvas id="rain-probability"></canvas>
+                </div>
+            </div>
+        {% endif %}
+
+        <div class="row top-buffer">
+            <div class="col-sm-12 card-group">
+                <div class="card">
+                    <div class="card-block">
+                        <h4 class="card-title">Next Hour</h4>
+                        <p  class="card-text">{{ next_hour_text }}</p>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-block">
+                        <h4 class="card-title">Next 24 Hours</h4>
+                        <p class="card-text">{{ next_day_text }}</p>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-block">
+                        <h4 class="card-title">Next 7 Days</h4>
+                        <p  class="card-text">{{ next_week_text }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <table class="table top-buffer" id="days">
+            {% for day in days %}
+                {% set maxtemp = day.d['apparentTemperatureMax'] | round | int %}
+                {% set mintemp = day.d['apparentTemperatureMin'] | round | int %}
+                <tr>
+                    <td>{{ day.time.date() | dayname | truncate(3, False, '') | upper if not loop.first else 'TODAY ' }}</td>
+                    <td><i class="wi wi-forecast-io-{{ day.d['icon'] }}"></i></td>
+                    <td>{{ day.summary }}</td>
+                    <td class="text-muted {{ mintemp | tempcolor }}">{{ mintemp }}°</td>
+                    <td class="{{ maxtemp | tempcolor }}">{{ maxtemp }}°</td>
+                </tr>
+            {% endfor %}
+        </table>
+    </div>
+{% endblock content %}
+
+{% block js_footer %}
+    <script>
+        var rainProb = {{ rain_prob }};
+    </script>
+    {{ super() }}
+{% endblock %}
