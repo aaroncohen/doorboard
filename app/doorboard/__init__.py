@@ -30,8 +30,11 @@ def update_weather():
     global last_weather, last_updated
 
     if last_updated + update_delay <= datetime.datetime.now():
-        last_updated = datetime.datetime.now()
-        last_weather = forecastio.load_forecast(api_key, *home)
+        try:
+            last_updated = datetime.datetime.now()
+            last_weather = forecastio.load_forecast(api_key, *home)
+        except Exception:
+            pass
 
 
 @app.template_filter('dayname')

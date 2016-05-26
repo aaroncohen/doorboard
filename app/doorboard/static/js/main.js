@@ -39,7 +39,7 @@ var options = {
 
 var data = {
     labels: [
-        "Now", "", "", "", "", "", "", "", "", "", "",
+        "Now",    "", "", "", "", "", "", "", "", "",
         "10 min", "", "", "", "", "", "", "", "", "",
         "20 min", "", "", "", "", "", "", "", "", "",
         "30 min", "", "", "", "", "", "", "", "", "",
@@ -53,5 +53,8 @@ var data = {
     ]
 };
 
-var ctx = document.getElementById("rain-probability").getContext("2d");
-var rainProbability = new Chart(ctx).Line(data, options);
+$(document).ready(function() {
+    var ctx = document.getElementById("rain-probability").getContext("2d");
+    var rainProbability = new Chart(ctx).Line(data, options);
+});
+
