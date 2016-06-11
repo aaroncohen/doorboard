@@ -19,7 +19,7 @@ app = create_app()
 app.secret_key = app.config.get('SECRET_KEY') or os.urandom(24)
 
 api_key = app.config.get('FORECASTIO_API_KEY')
-home = app.config.get('HOME')
+home = (app.config.get('HOME_LAT'), app.config.get('HOME_LONG'))
 
 update_delay = datetime.timedelta(seconds=app.config.get('UPDATE_DELAY'))
 last_updated = datetime.datetime.now() - update_delay
