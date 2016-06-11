@@ -54,6 +54,11 @@ var data = {
 };
 
 $(document).ready(function() {
+    setInterval(function() {
+        location.reload(true);
+        console.log('Reloading');
+    }, 30000);
+
     var ctx = document.getElementById("rain-probability").getContext("2d");
     var rainProbability = new Chart(ctx).Line(data, options);
 });
